@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="cn">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>发布订阅者模式</title>
+</head>
+
+<body>
+    <script>
+        // 事件触发器
+        class EventEmitter {
+            // 事件中心
+            constructor() {
+                // 创建的对象原型属性为null
+                this.subs = Object.create(null)
+            }
+            // 注册事件
+            $on(eventType, handler) {
+                this.subs[eventType] = this.subs[eventType] || []
+                this.subs[eventType].push(handler)
+            }
+
+            // 触发事件
+            $emit(eventType) {
+                if (this.subs[eventType]) {
+                    this.subs[eventType].forEach((handler) => {
+                        handler()
+                    })
+
+                }
+            }
+        }
+
+
+        //  测试
+        // 1.新建事件发布实例
+        let em = new EventEmitter()
+        // 2.接收事件
+        // em.$on('unicode', () => {
+        //     console.log('s键点击了')
+        // })
+        // // 3.监听键盘事件
+        document.addEventListener('keyup', (e) => {
+            console.log('阿萨大大')
+            if (e.code === 'KeyS') {
+                // 4.键盘事件触发,发布事件
+                // em.$emit('unicode')
+                em.$emit('click')
+
+            }
+        })
+
+        // 注册事件(订阅消息)
+        em.$on('click', () => {
+            console.log('click1')
+        })
+        em.$on('click', () => {
+            console.log('click2')
+        })
+        // 触发事件(发布消息)
+
+
+    </script>
+</body>
+
+</html>

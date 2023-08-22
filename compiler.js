@@ -84,8 +84,53 @@ class Compiler {
 
 
     // 5.编译元素节点
+    compileElement(node) {
+        // 获取元素节点上所有属性进行遍历
+        Array.from(node.attributes).forEach((attr) => {
+            // 获取属性名
+            let _attrName = attr.name
+            // 判断是否以v-开头
+            if (this.isDirective(_attrName)) {
+                // 删除v-
+                const attrName = _attrName.substr(2)
+                // 获取属性值，并赋值给key
+                const key = attr.value
+                const value = this.vm[key]
+                // 添加指令方法
+                this.update(node, value, attrName, key)
+                // 数据更新后，通过watcher更新视图
+                new Watcher(this.vm, key, (newValue) => {
+                    this.update(node, newValue, attrName, key)
+                })
+            }
+        })
+    }
 
     // 6.编译文本节点
+    compileText() {
+        // .表示任意单个字符，不包括换行符、表示匹配前面多个相同的字符、？表示非贪婪模式、尽可能早的介绍查找
+        const reg = /\{\{(.+?)\}\}/
+        // 获取节点内容
+        var param = node.textContent
+        // 判断是否有{{}}
+        if (reg.test(param)) {
+            // $1表示匹配的第一个,也就是{{里面的内容}}
+            // 去除{{}}前后空格
+            const key = RegExp.$1.trim()
+            // 赋值给node
+            node.textContent = param.replace(reg, this.vm[key])
+            // 编译模板的时候，创建一个watcher实例，并在内部挂载到Dep上
+            new Watcher(this.vm, key, (newValue) => {
+                // 通过回调函数,更新视图
+                node.textContent = newValue
+
+            })
+
+
+
+        }
+
+    }
 
 
     // 7.判断元素的属性是否是vue指令

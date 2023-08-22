@@ -12,7 +12,7 @@
  * 
  */
 
-class Obsever {
+class Observer {
 
 
     constructor(data) {

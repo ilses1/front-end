@@ -107,7 +107,7 @@ class Compiler {
     }
 
     // 6.编译文本节点
-    compileText() {
+    compileText(node) {
         // .表示任意单个字符，不包括换行符、表示匹配前面多个相同的字符、？表示非贪婪模式、尽可能早的介绍查找
         const reg = /\{\{(.+?)\}\}/
         // 获取节点内容
@@ -135,7 +135,7 @@ class Compiler {
 
     // 7.判断元素的属性是否是vue指令
     isDirective(attrName) {
-        return attrName && attrName.startWith('v-')
+        return attrName && attrName.startsWith('v-')
     }
 
     // 8.判断是否是文本节点

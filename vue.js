@@ -48,7 +48,7 @@ class Vue {
                     if (newValue === data[key]) {
                         return
                     }
-                    this.data[key] = newValue
+                    data[key] = newValue
 
                 }
             })

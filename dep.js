@@ -14,7 +14,6 @@
  * - notify():触发观察者的update
  * 
  */
-
 class Dep {
 
     constructor() {
@@ -30,6 +29,7 @@ class Dep {
     }
     // 发送通知
     notify() {
+        
         // 触发每个观察者的更新方法
         this.subs.forEach((sub) => {
             sub.update()
